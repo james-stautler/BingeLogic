@@ -1,0 +1,11 @@
+var R=require("../../chunks/ssr/[turbopack]_runtime.js")("server/app/_global-error/page.js")
+R.c("server/chunks/ssr/[root-of-the-server]__eb78ae45._.js")
+R.c("server/chunks/ssr/GitHub_BingeLogic_e06f55e1._.js")
+R.c("server/chunks/ssr/681e6_next_dist_449bb106._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__ae79af2b._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__213a0d30._.js")
+R.c("server/chunks/ssr/681e6_next_dist_cc92d9b0._.js")
+R.c("server/chunks/ssr/GitHub_BingeLogic_src_frontend_app_3800b81a._.js")
+R.c("server/chunks/ssr/2baf2_src_frontend__next-internal_server_app__global-error_page_actions_99b030d5.js")
+R.m(33813)
+module.exports=R.m(33813).exports
