@@ -1,0 +1,78 @@
+
+/* MOBILE */
+
+.SearchBarContainer {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.SearchInput {
+    display: flex;
+    text-align: left;
+    text-indent: 1rem;
+
+    padding: 0.5rem 0.5rem 0.5rem;
+    
+    color: var(--foreground);
+    border: 1px solid var(--border);
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+.SearchInput:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.SearchSubmit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 0.5rem 0.5rem 0.5rem;
+    
+    background-color: var(--border);
+    border: 1px solid var(--border);
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.SearchSubmit:hover {
+    cursor: pointer;
+}
+
+.ErrorText {
+    margin-top: 0.5rem;
+    visibility: hidden;
+    text-align: center;
+    color: red;
+}
+
+.visible {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Tablets */ 
+
+@media (min-width: 768px) {
+
+
+}
+
+/* Large Tablets and Small Laptops */
+
+@media (min-width: 1024px) {
+
+
+
+}
+
+/* Wide screens */
+
+@media (min-width: 1440px) {
+
+
+
+}

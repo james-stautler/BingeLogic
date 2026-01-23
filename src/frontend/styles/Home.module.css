@@ -1,0 +1,54 @@
+/* Mobile */ 
+
+.HomeContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: center;
+}
+
+.HeaderContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.HeaderTitle {
+    display: flex;
+    justify-content: center;
+    font-size: 3rem;
+    letter-spacing: -0.04em;
+    color: var(--foreground);
+    font-weight: 400;
+}
+
+.HeaderSubtitle {
+    display: flex;
+    justify-content: center;
+    font-size: 1.125rem;
+    color: var(--muted-foreground);
+    margin-top: 0.5rem;
+    letter-spacing: -0.05em;
+}
+
+/* Tablets */ 
+
+@media (min-width: 768px) {
+
+
+}
+
+/* Large Tablets and Small Laptops */
+
+@media (min-width: 1024px) {
+
+
+
+}
+
+/* Wide screens */
+
+@media (min-width: 1440px) {
+
+
+
+}
