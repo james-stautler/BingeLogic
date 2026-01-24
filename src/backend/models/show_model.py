@@ -20,12 +20,13 @@ class ShowMetrics(BaseModel):
 
 class ShowModel(BaseModel):
 
-    id: str = Field(alias="_id")
+    id: int = Field(alias="_id")
     title: str
     overview: Optional[str] = None
     poster_path: Optional[str] = None
     first_air_date: Optional[str] = None
     genres: List[str] = []
+    number_of_seasons: int
 
     last_updated: datetime = Field(default_factory=datetime.now)
 

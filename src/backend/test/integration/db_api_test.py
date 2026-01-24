@@ -7,13 +7,14 @@ from db.mongodb import client
 @pytest.mark.asyncio
 async def test_crud():
 
-    test_id = "test_id_999"
+    test_id = 11
     await delete_show(test_id)
 
     show = ShowModel(
         id = test_id,
         title = "Test Show",
         overview = "Testing CRUD DB operations",
+        number_of_seasons = 1,
         episodes = [
             Episode(season_number=1, episode_number=1, title="Pilot", rating=9.0)
         ],
