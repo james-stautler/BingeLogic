@@ -1,8 +1,11 @@
 fastapi
 uvicorn[standard]
+motor
 pymongo[srv]
 pydantic
 pydantic-settings
 pandas
 httpx
 python-dotenv
+pytest
+pytest-asyncio
