@@ -1,43 +1,48 @@
 import httpx
 import os
 import asyncio
-from models.show_model import ShowModel, Episode, ShowMetrics
+
+from models.show_model import SearchResult, ShowModel, Episode, ShowMetrics
 from fastapi import HTTPException
 from typing import List
 
 TMDB_READ_TOKEN = os.getenv("TMDB_READ_TOKEN")
 
-async def get_shows(query: str):
+async def get_shows(query: str, client: httpx.AsyncClient = None) -> List[SearchResult]:
     
     url = "https://api.themoviedb.org/3/search/tv"
     headers = {
         "Authorization": f"Bearer {TMDB_READ_TOKEN}",
         "accept": "application/json"
     }
-
-    async with httpx.AsyncClient() as client:
-        try:
+    
+    try:
+        res = None
+        if client:
             res = await client.get(url, headers=headers, params={"query": query})
-            res.raise_for_status()
+        else:
+            async with httpx.AsyncClient() as c:
+                res = await c.get(url, headers=headers, params={"query":query})
 
-            data = res.json()
-            results = data.get("results", [])
-            return [
-                    {
-                        "tmdb_id": show["id"],
-                        "title": show["name"],
-                        "overview": show.get("overview"),
-                        "poster_path": show.get("poster_path"),
-                        "release_date": show.get("first_air_date")
-                    }
-                    for show in results
-            ]
-        except httpx.HTTPStatusError as e:
-            raise HTTPException(status_code=e.response.status_code, detail="TMDB API Error")
-        except Exception as e:
-            raise HTTPException(status_code=500, detail=f"Unexpected Error: {str(e)}")
+        res.raise_for_status()
 
-async def get_show_details(show_id: int) -> ShowModel:
+        data = res.json()
+        results = data.get("results", [])
+        return [
+                SearchResult(
+                    tmdb_id=show["id"],
+                    title=show["name"],
+                    poster_path=show.get("poster_path"),
+                    release_date=show.get("first_air_date")
+                )
+                for show in results
+        ]      
+    except httpx.HTTPStatusError as e:
+        raise HTTPException(status_code=e.response.status_code, detail="TMDB API Error")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Unexpected Error: {str(e)}")
+
+async def get_show_details(show_id: int, client: httpx.AsyncClient = None) -> ShowModel:
 
     url = f"https://api.themoviedb.org/3/tv/{show_id}"
     headers = {
@@ -45,25 +50,30 @@ async def get_show_details(show_id: int) -> ShowModel:
         "accept": "application/json"
     }
 
-    async with httpx.AsyncClient() as client:
-        try:
+    try:
+        res = None
+        if client:
             res = await client.get(url, headers=headers)
-            res.raise_for_status()
-            data = res.json()
+        else:
+            async with httpx.AsyncClient() as c:
+                res = await c.get(url, headers=headers)
 
-            return ShowModel(
-                id = data["id"],
-                title = data["name"],
-                overview = data["overview"],
-                poster_path = data["poster_path"],
-                first_air_date = data["first_air_date"],
-                genres = [item["name"] for item in data["genres"]],
-                number_of_seasons = data["number_of_seasons"]
-            )
-        except httpx.HTTPStatusError as e:
-            raise HTTPException(status_code=e.response.status_code, detail="TMDB API Error")
-        except Exception as e:
-            raise HTTPException(status_code=500, details=f"Unexpected Error: {str(e)}")
+        res.raise_for_status()
+        data = res.json()
+
+        return ShowModel(
+            id = data["id"],
+            title = data["name"],
+            overview = data["overview"],
+            poster_path = data["poster_path"],
+            first_air_date = data["first_air_date"],
+            genres = [item["name"] for item in data["genres"]],
+            number_of_seasons = data["number_of_seasons"]
+        )
+    except httpx.HTTPStatusError as e:
+        raise HTTPException(status_code=e.response.status_code, detail="TMDB API Error")
+    except Exception as e:
+        raise HTTPException(status_code=500, details=f"Unexpected Error: {str(e)}")
 
 async def get_single_season(show_id: int, season: int, client: httpx.AsyncClient = None) -> List[Episode]:
 

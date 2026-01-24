@@ -11,6 +11,5 @@ async def test_imdb_service_get_shows():
     assert len(results) > 0
 
     first_result = results[0]
-    assert "tmdb_id" in first_result
-    assert "title" in first_result
-    assert "Severance" in first_result["title"]
+    assert first_result.title == "Severance"
+    assert first_result.release_date == "2022-02-17"

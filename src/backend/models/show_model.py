@@ -2,6 +2,12 @@ from pydantic import BaseModel, Field, ConfigDict
 from typing import List, Optional
 from datetime import datetime
 
+class SearchResult(BaseModel):
+    tmdb_id: int
+    title: str
+    poster_path: Optional[str]
+    release_date: Optional[str]
+
 class Episode(BaseModel):
     season_number: int
     episode_number: int

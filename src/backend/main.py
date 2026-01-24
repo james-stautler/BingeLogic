@@ -3,7 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 
 from db.mongodb import client, ping_database
-from api.Health import health_router, database_heartbeat 
+from api.health.Health import health_router, database_heartbeat
+from api.routes.shows import shows_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -22,6 +23,7 @@ app = FastAPI(
         lifespan = lifespan)
 
 app.include_router(health_router, prefix="/api")
+app.include_router(shows_router, prefix="/api")
 
 @app.get("/")
 async def root():
