@@ -45,3 +45,7 @@ bin/
 lib/
 include/
 pyvenv.cfg
+
+# testing
+*.pyc
+__pycache__/
