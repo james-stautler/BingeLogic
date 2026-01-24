@@ -5,7 +5,7 @@ from crud.modeledQueries import insert_show, get_show_by_id, update_show, delete
 from db.mongodb import client
 
 @pytest.mark.asyncio
-async def test_insert_get_delete():
+async def test_crud():
 
     test_id = "test_id_999"
     await delete_show(test_id)
@@ -37,11 +37,19 @@ async def test_insert_get_delete():
     assert fetched_show.analysis.watchability_score == 90.0    
     assert fetched_show.last_updated is not None
 
+    await  update_show(test_id, {"title": "New Title"})
+
+    fetched_show = await get_show_by_id(test_id)
+    assert fetched_show is not None
+    assert fetched_show.title == "New Title"
+
     await delete_show(test_id)
 
     fetched_show = await get_show_by_id(test_id)
 
     assert fetched_show is None
+
+
 
 
 
