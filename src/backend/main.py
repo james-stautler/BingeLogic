@@ -6,6 +6,11 @@ from db.mongodb import client, ping_database
 from api.health.Health import health_router, database_heartbeat
 from api.routes.shows import shows_router
 
+origins = [
+    "http://localhost:3000",
+    "https://bingelogic.jstautler.fyi"
+]
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     res = await ping_database()
@@ -25,9 +30,12 @@ app = FastAPI(
 app.include_router(health_router, prefix="/api")
 app.include_router(shows_router, prefix="/api")
 
-@app.get("/")
-async def root():
-    return {"message": "API IS WORKING"}
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"], 
+    allow_headers=["*"],
+)
     
 
