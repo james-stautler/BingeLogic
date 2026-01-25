@@ -10,4 +10,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Wake Up Render
-        run: curl -sL ${{ secrets.API_URL }}/api/health/heartbeat
+        run: curl -sL "${{ secrets.API_URL }}/api/health/heartbeat"
