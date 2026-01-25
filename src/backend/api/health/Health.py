@@ -4,7 +4,7 @@ from datetime import datetime
 
 health_router = APIRouter(prefix="/health", tags=["System"])
 
-@health_router.get("/")
+@health_router.get("/heartbeat")
 async def database_heartbeat():
 
     heartbeat = {
