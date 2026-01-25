@@ -21,3 +21,10 @@ async def update(collection: str, id_val: Any, data: Dict[str, Any]):
 async def delete(collection: str, query: Dict[str, Any]):
     return await db[collection].delete_one(query)
 
+async def delete_many(collection:str, ids: List[int]):
+    query = {"id": {"$in": ids}}
+    return await db[collection].delete_many(query)
+
+def get_cursor(collection: str, projection: Optional[Dict[str, Any]]):
+    return db[collection].find({}, projection)
+
