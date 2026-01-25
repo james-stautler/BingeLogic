@@ -1,5 +1,5 @@
 import pytest
-from services.tmdb_service import get_all_seasons
+from services.tmdb_service import tmdb_get_episodes_all_seasons
 
 @pytest.mark.asyncio
 async def test_tmdb_get_all_seasons():
@@ -7,10 +7,10 @@ async def test_tmdb_get_all_seasons():
     show_id = 95396
     seasons = 2
 
-    seasons = await get_all_seasons(show_id, seasons)
+    episodes = await tmdb_get_episodes_all_seasons(show_id, seasons)
 
-    assert seasons is not None
-    assert len(seasons) == 2
+    assert episodes is not None
+    assert len(episodes) > 0
 
     
 

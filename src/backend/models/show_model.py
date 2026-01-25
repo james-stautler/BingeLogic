@@ -9,6 +9,7 @@ class SearchResult(BaseModel):
     release_date: Optional[str]
 
 class Episode(BaseModel):
+    id: int
     season_number: int
     episode_number: int
     title: str
@@ -18,11 +19,18 @@ class Episode(BaseModel):
 
 class ShowMetrics(BaseModel):
     watchability_score: float = Field(ge = 0, le = 100)
+    average_rating: float
+    high_rating: float
+    low_rating: float
+    stinker_episodes: List[int]
+    stinker_rating: float
+    highlight_episodes: List[int]
+    highlight_rating: float
     rating_consistency: float
+    land_the_plane_score: float
     momentum_score: float
     retention_rate: float
-    consensus_gap: float
-    popularity: float = Field(default=0.0)
+    binge_index: float
 
 class ShowModel(BaseModel):
 
@@ -33,12 +41,13 @@ class ShowModel(BaseModel):
     first_air_date: Optional[str] = None
     genres: List[str] = []
     number_of_seasons: int
+    popularity: float = Field(default=0.0)
+
+    metrics: Optional[ShowMetrics] = None
 
     last_updated: datetime = Field(default_factory=datetime.now)
 
     episodes: List[Episode] = []
-
-    analysis: Optional[ShowMetrics] = None
 
     model_config = ConfigDict(
         populate_by_name=True,
