@@ -7,7 +7,7 @@ class DatabaseCollections:
     SHOWS = "shows"
 
 load_dotenv("backend.env")
-uri = os.getenv("MONGO_DB_URI")
+uri = os.getenv("MONGODB_URI")
 print(uri)
 
 client = AsyncIOMotorClient(uri, server_api=ServerApi('1'))

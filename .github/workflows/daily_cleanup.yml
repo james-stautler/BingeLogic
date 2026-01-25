@@ -1,0 +1,15 @@
+name: Database Daily Cleanup
+
+on:
+  schedule:
+    - cron: '0 3 * * *' 
+  workflow_dispatch:
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger DB Cleanup
+        run: |
+          curl -i -X POST ${{ secrets.API_URL }}/api/cleanup \
+          -H "x-token: ${{ secrets.CLEANUP_TOKEN }}"

@@ -59,7 +59,6 @@ async def cleanup():
 @shows_router.post("/cleanup")
 async def trigger_cleanup(backgroundTasks: BackgroundTasks, token: str = Header(None)):
     
-    print(os.getenv("CLEANUP_TOKEN"))
     if token != os.getenv("CLEANUP_TOKEN"):
         raise HTTPException(status_code=403)
 
