@@ -4,16 +4,14 @@ import { useState } from "react";
 import { useRouter } from 'next/navigation';
 import { useEffect } from "react";
 
-interface SearchBarProps {
-    onSearch: (query:String) => void;
-}
-
 interface SearchResult {
     tmdb_id: number,
     title: string,
     poster_path: string,
     release_date: string
 }
+
+const POSTER_QUERY_URL = "https://image.tmdb.org/t/p/w92"
 
 async function getSuggestions(query:String) {
     try {
@@ -52,7 +50,7 @@ export default function SearchBar() {
     useEffect(() => {
         const fetchResults = async () => {
 
-            if (!debouncedQuery) {
+            if (!debouncedQuery || debouncedQuery.length < 2) {
                 setSuggestions([]);
                 return;
             }
@@ -67,7 +65,10 @@ export default function SearchBar() {
                     release_date: item.release_date
                 }));
 
-                setSuggestions(search_results); 
+                setSuggestions(search_results.splice(0, 3)); 
+            }
+            else {
+                setSuggestions([]);
             }
         };
 
@@ -87,20 +88,41 @@ export default function SearchBar() {
 
     return (
         <div>
-            <form className={styles.SearchBarContainer} onSubmit={handleSearch}>
-                <input 
-                    type="text" 
-                    placeholder="Enter TV show" 
-                    className={styles.SearchInput}
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                />
-                <button type="submit" className={styles.SearchSubmit}>
-                    🔍
-                </button>
-            </form>
-            <div className={`${styles.ErrorText} ${error ? styles.visible : ''}`}>
-                Your Query: {query}
+            <div className={styles.SearchBarContainer}>
+                <form onSubmit={handleSearch}>
+                    <input 
+                        type="text" 
+                        placeholder="Enter TV show" 
+                        className={styles.SearchInput}
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
+                    />
+                    <button type="submit" className={styles.SearchSubmit}>
+                        🔍
+                    </button>
+                </form>
+            </div>
+            <div className={`${styles.SuggestionDropdownContainer} ${suggestions.length > 0 ? styles.visible : ''}`}>
+                 {suggestions.map((show) => (
+                    <div key={show.tmdb_id} className={styles.SuggestionDropdownItem}>
+                        <div className={styles.SuggestionDropdownLeft}>
+                            <div className={styles.SuggestionPoster}>
+                                <img src={POSTER_QUERY_URL + show.poster_path} />
+                            </div>
+                            <div className={styles.SuggestionDropdownMeta}>
+                                <div className={styles.SuggestionDropdownTitle}>
+                                    {show.title}
+                                </div>
+                                <div className={styles.SuggestionDropdownDate}>
+                                    {show.release_date.slice(0, 4)}
+                                </div>
+                            </div>
+                        </div>
+                        <div className={styles.SuggestionDropdownRight}>
+                            &rarr;
+                        </div>
+                    </div>
+                ))}
             </div>
         </div>
     );

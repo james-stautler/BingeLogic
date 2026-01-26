@@ -2,15 +2,22 @@
 /* MOBILE */
 
 .SearchBarContainer {
+    position: relative;
     display: flex;
     justify-content: center;
     margin-top: 2rem;
+}
+
+.SearchBarContainer form {
+    display: flex;
+    width: 300px;
 }
 
 .SearchInput {
     display: flex;
     text-align: left;
     text-indent: 1rem;
+    flex-grow: 1;
 
     padding: 0.5rem 0.5rem 0.5rem;
     
@@ -18,6 +25,7 @@
     border: 1px solid var(--border);
     border-top-left-radius: 20px;
     border-bottom-left-radius: 20px;
+
 }
 
 .SearchInput:focus {
@@ -42,11 +50,79 @@
     cursor: pointer;
 }
 
-.ErrorText {
-    margin-top: 0.5rem;
+.SuggestionDropdownContainer {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
     visibility: hidden;
     text-align: center;
-    color: red;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.SuggestionDropdownItem {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 0.5rem 1rem 0.5rem;
+    width: 300px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-top: 0.5rem;
+}
+
+.SuggestionDropdownItem:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.SuggestionDropdownLeft {
+    display: flex;
+    justify-content: flex-start;
+    width: 90%;
+}
+
+.SuggestionDropdownRight {
+    color: var(--foreground);
+    font-weight: bolder;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.SuggestionDropdownMeta {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    text-align: left;
+    padding-left: 0.5rem;
+    background-color: inherit;
+    justify-content: center;
+}
+
+.SuggestionPoster {
+    display: flex;
+    justify-content: flex-start;
+    width: 15%;
+}
+
+.SuggestionPoster img {
+    background-color: inherit;
+}
+
+.SuggestionDropdownTitle {
+    font-size: 1rem;
+    color: var(--foreground);
+    background-color: inherit; 
+}
+
+.SuggestionDropdownDate {
+    font-size: 0.8rem;
+    color: var(--muted-foreground);
+    background-color: inherit;
 }
 
 .visible {
@@ -58,14 +134,34 @@
 
 @media (min-width: 768px) {
 
+    .SearchBarContainer form {
+        width: 400px;
+    }
 
+    .SuggestionDropdownItem {
+        width: 400px;
+    }
+
+    .SuggestionDropdownMeta {
+        padding-left: 1rem;
+    }
 }
 
 /* Large Tablets and Small Laptops */
 
 @media (min-width: 1024px) {
 
+    .SearchBarContainer form {
+        width: 500px;
+    }
 
+    .SuggestionDropdownItem {
+        width: 500px;
+    }
+
+    .SuggestionDropdownMeta {
+        padding-left: 1.5rem;
+    }
 
 }
 

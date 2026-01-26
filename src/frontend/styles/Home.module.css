@@ -3,7 +3,7 @@
 .HomeContainer {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: 40vh;
     justify-content: center;
 }
 
