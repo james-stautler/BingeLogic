@@ -3,6 +3,10 @@ import styles from "../styles/SearchBar.module.css"
 import { useState } from "react";
 import { useRouter } from 'next/navigation';
 import { useEffect } from "react";
+import Link from "next/link";
+
+const SUGGESTION_LIMIT = 5;
+const POSTER_QUERY_URL = "https://image.tmdb.org/t/p/w92"
 
 interface SearchResult {
     tmdb_id: number,
@@ -10,8 +14,6 @@ interface SearchResult {
     poster_path: string,
     release_date: string
 }
-
-const POSTER_QUERY_URL = "https://image.tmdb.org/t/p/w92"
 
 async function getSuggestions(query:String) {
     try {
@@ -65,7 +67,7 @@ export default function SearchBar() {
                     release_date: item.release_date
                 }));
 
-                setSuggestions(search_results.splice(0, 3)); 
+                setSuggestions(search_results.splice(0, SUGGESTION_LIMIT)); 
             }
             else {
                 setSuggestions([]);
@@ -78,8 +80,26 @@ export default function SearchBar() {
     
 
     const handleSearch = async (e: React.FormEvent) => {
+
         e.preventDefault();
-        setError(true);
+
+        if (query.length < 2) {
+            return;
+        } 
+
+        const queryResults = await getSuggestions(query); 
+        
+        if (queryResults) {
+
+            const search_results: SearchResult[] = queryResults.map((item: any) => ({
+                    tmdb_id: item.tmdb_id,
+                    title: item.title,
+                    poster_path: item.poster_path,
+                    release_date: item.release_date
+            }));  
+            
+            router.push("/show-metrics?query=" + search_results.at(0).tmdb_id); 
+        }
     }
 
     if (suggestions.length != 0) {
@@ -104,7 +124,7 @@ export default function SearchBar() {
             </div>
             <div className={`${styles.SuggestionDropdownContainer} ${suggestions.length > 0 ? styles.visible : ''}`}>
                  {suggestions.map((show) => (
-                    <div key={show.tmdb_id} className={styles.SuggestionDropdownItem}>
+                    <Link href={"/show-metrics?query=" + show.tmdb_id} key={show.tmdb_id} className={styles.SuggestionDropdownItem}>
                         <div className={styles.SuggestionDropdownLeft}>
                             <div className={styles.SuggestionPoster}>
                                 <img src={POSTER_QUERY_URL + show.poster_path} />
@@ -121,7 +141,7 @@ export default function SearchBar() {
                         <div className={styles.SuggestionDropdownRight}>
                             &rarr;
                         </div>
-                    </div>
+                    </Link>
                 ))}
             </div>
         </div>

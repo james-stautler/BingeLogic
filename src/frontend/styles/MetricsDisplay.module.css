@@ -1,0 +1,47 @@
+
+/* MOBILE */
+
+.MetricsDisplayContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.MetricsDisplayNav {
+    font-size: 1rem;
+    color: var(--foreground);
+}
+
+.MetricsDisplayNav:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.Metrics
+
+.MetricsDisplayHero {
+    display: flex;
+    flex-direction: column;
+}
+
+.MetricsDisplayHeroPoster {
+    width: 100%;
+}
+
+.MetricsDisplayHeroMeta {
+    display: flex;
+    flex-direction: column;
+}
+
+.MetricsDisplayHeroMetaTitle {
+    color: var(--foreground);
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.MetricsDisplayHeroMetaReleaseDate {
+    color: var(--muted-foreground);
+}
+
+.MetricsDisplayHeroMetaOverview {
+    color: var(--muted-foreground);
+}
