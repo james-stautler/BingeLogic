@@ -98,7 +98,10 @@ export default function SearchBar() {
                     release_date: item.release_date
             }));  
             
-            router.push("/show-metrics?query=" + search_results.at(0).tmdb_id); 
+            if (search_results) {
+                const result = search_results[0];
+                router.push("/show-metrics?query=" + result.tmdb_id); 
+            }
         }
     }
 
