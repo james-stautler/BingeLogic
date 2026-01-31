@@ -16,15 +16,13 @@
     opacity: 0.8;
 }
 
-.Metrics
-
 .MetricsDisplayHero {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
 }
 
 .MetricsDisplayHeroPoster {
-    width: 100%;
+    width: 50%;
 }
 
 .MetricsDisplayHeroMeta {

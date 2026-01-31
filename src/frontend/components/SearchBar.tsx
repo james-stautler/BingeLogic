@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from "react";
 import Link from "next/link";
 
-const SUGGESTION_LIMIT = 5;
+const SUGGESTION_LIMIT = 4;
 const POSTER_QUERY_URL = "https://image.tmdb.org/t/p/w92"
 
 interface SearchResult {
@@ -130,7 +130,7 @@ export default function SearchBar() {
                     <Link href={"/show-metrics?query=" + show.tmdb_id} key={show.tmdb_id} className={styles.SuggestionDropdownItem}>
                         <div className={styles.SuggestionDropdownLeft}>
                             <div className={styles.SuggestionPoster}>
-                                <img src={POSTER_QUERY_URL + show.poster_path} />
+                                <img src={POSTER_QUERY_URL + show.poster_path}/>
                             </div>
                             <div className={styles.SuggestionDropdownMeta}>
                                 <div className={styles.SuggestionDropdownTitle}>

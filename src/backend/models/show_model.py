@@ -38,6 +38,7 @@ class ShowModel(BaseModel):
     title: str
     overview: Optional[str] = None
     poster_path: Optional[str] = None
+    backdrop_path: Optional[str] = None
     first_air_date: Optional[str] = None
     genres: List[str] = []
     number_of_seasons: int

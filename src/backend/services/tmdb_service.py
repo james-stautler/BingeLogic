@@ -66,6 +66,7 @@ async def tmdb_get_show_details(show_id: int, client: httpx.AsyncClient = None) 
             title = data["name"],
             overview = data["overview"],
             poster_path = data["poster_path"],
+            backdrop_path = data["backdrop_path"],
             first_air_date = data["first_air_date"],
             genres = [item["name"] for item in data["genres"]],
             number_of_seasons = data["number_of_seasons"],

@@ -112,9 +112,6 @@ export default async function Page({searchParams,}:{searchParams: Promise<{ [key
                     <div className={styles.MetricsDisplayHeroMetaReleaseDate}>
                         {SHOW.first_air_date}
                     </div>
-                    <div className={styles.MetricsDisplayHeroMetaOverview}>
-                        {SHOW.overview}
-                    </div>
                 </div>
            </div>
         </div>

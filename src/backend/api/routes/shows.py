@@ -24,6 +24,7 @@ async def full_refresh(show_id: int):
     show.metrics = metrics
     show.last_updated = datetime.now(timezone.utc)
     
+    await db_delete_show(show_id)
     id = await db_insert_show(show) 
 
     return show
