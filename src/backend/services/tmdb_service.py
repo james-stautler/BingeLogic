@@ -70,7 +70,7 @@ async def tmdb_get_show_details(show_id: int, client: httpx.AsyncClient = None) 
             first_air_date = data["first_air_date"],
             genres = [item["name"] for item in data["genres"]],
             number_of_seasons = data["number_of_seasons"],
-            popularity = data["popularity"]
+            popularity = round(data["popularity"], 2)
         )
     except httpx.HTTPStatusError as e:
         raise HTTPException(status_code=e.response.status_code, detail="TMDB API Error")

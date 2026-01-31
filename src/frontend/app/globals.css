@@ -10,12 +10,31 @@
 }
 
 :root {
-  --background: oklch(14% 0.01 250);  
-  --foreground: oklch(85% 0.01 250);
-  --muted-foreground: oklch(65% 0.01 250);
-  --border: oklch(25% 0.01 250);
-  --primary: oklch(60% 0.15 250)`;
-  --radius: 0.5rem;
+    --background: oklch(14% 0.01 250);  
+    --foreground: oklch(85% 0.01 250);
+    --muted-foreground: oklch(65% 0.01 250);
+    --border: oklch(25% 0.01 250);
+    --primary: oklch(60% 0.15 250)`;
+    --radius: 0.5rem;
+
+    --text-xs: 0.618rem;
+    --text-sm: 0.809rem;
+    --text-base: 1rem;
+    --text-md: 1.618rem;
+    --text-lg: 2.618rem;
+    --text-xl: 4.236rem;
+    --text-xxl: 6.854rem;
+
+
+    /* LING HEIGHTS */
+    --leading-golden: 1.618;
+    --leading-tight: 1.2;
+
+    /* PADDING AND MARGIN SPACING */
+    --space-xs: 0.618rem;
+    --space-sm: 1rem;
+    --space-md: 1.618rem; /* The "Golden" Gutter */
+    --space-lg: 2.618rem;
 }
 
 * {

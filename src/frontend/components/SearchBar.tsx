@@ -1,3 +1,5 @@
+"use client";
+
 import styles from "../styles/SearchBar.module.css"
 
 import { useState } from "react";
@@ -30,7 +32,7 @@ async function getSuggestions(query:String) {
     }
 }
 
-export default function SearchBar() {
+export default function SearchBar({navBar} : {navBar : boolean}) { 
     
     const [query, setQuery] = useState('');
     const [debouncedQuery, setDebouncedQuery] = useState('');
@@ -125,7 +127,7 @@ export default function SearchBar() {
                     </button>
                 </form>
             </div>
-            <div className={`${styles.SuggestionDropdownContainer} ${suggestions.length > 0 ? styles.visible : ''}`}>
+            <div className={`${styles.SuggestionDropdownContainer} ${(suggestions.length > 0 && !navBar) ? styles.visible : ''}`}>
                  {suggestions.map((show) => (
                     <Link href={"/show-metrics?query=" + show.tmdb_id} key={show.tmdb_id} className={styles.SuggestionDropdownItem}>
                         <div className={styles.SuggestionDropdownLeft}>

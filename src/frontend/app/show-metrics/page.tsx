@@ -1,8 +1,11 @@
 import styles from "styles/MetricsDisplay.module.css"
 
 import Link from "next/link"
+import SearchBar from "@/components/SearchBar"
+import { useWindowSize } from "@/hooks/useWindowSize"
 
 const POSTER_QUERY_URL = "https://image.tmdb.org/t/p/w780"
+const BACKDROP_QUERY_URL = "https://image.tmdb.org/t/p/original"
 
 interface MetricsModel {
     watchability_score: number,
@@ -35,6 +38,7 @@ interface ShowModel {
     title: string,
     overview: string,
     poster_path: string,
+    backdrop_path: string,
     first_air_date: string,
     genres: string[],
     number_of_seasons: number,
@@ -51,6 +55,7 @@ function mapToShowModel(json: any): ShowModel {
     title: json.title ?? "Unknown Title",
     overview: json.overview ?? "",
     poster_path: json.poster_path ?? "",
+    backdrop_path: json.backdrop_path ?? "",
     first_air_date: json.first_air_date ?? "",
     genres: Array.isArray(json.genres) ? json.genres : [],
     number_of_seasons: json.number_of_seasons ?? 0,
@@ -88,32 +93,48 @@ function mapToShowModel(json: any): ShowModel {
 
 }
 
+function getPopularityTier(score: number): { label: string; color: string } {
+    if (score >= 300) return { label: "High", color: "#FBBF24" }; // Emerald Green
+    if (score >= 50) return { label: "Medium", color: "#34D399" }; // Your Azure Blue
+    return { label: "Low", color: "#60A5FA" }; // Dimmed
+}
+
 export default async function Page({searchParams,}:{searchParams: Promise<{ [key: string]: string | string[] | undefined}>}) {
 
     const { query } = await searchParams;
     const response = await fetch(`https://bingelogic-backend.onrender.com/api/show_details?show_id=${query}`);
 
     const data = await response.json();
-    const SHOW: ShowModel = mapToShowModel(data); 
-    
+    const SHOW: ShowModel = mapToShowModel(data);
+    const tier = getPopularityTier(SHOW.popularity);
+
+    const POSTER_URL = POSTER_QUERY_URL + SHOW.poster_path;
+    const BACKDROP_URL = BACKDROP_QUERY_URL + SHOW.backdrop_path;
+
     return (
         <div className={styles.MetricsDisplayContainer}>
-            <Link href={"/"} className={styles.MetricsDisplayNav}>
-                &larr;
-            </Link>
-           <div className={styles.MetricsDisplayHero}>
+            <SearchBar navBar={true} />
+            <div className={styles.MetricsDisplayHero}>
                 <div className={styles.MetricsDisplayHeroPoster}>
-                    <img src={POSTER_QUERY_URL + SHOW.poster_path} />
+                    <img src={BACKDROP_URL}/>
                 </div>
                 <div className={styles.MetricsDisplayHeroMeta}>
                     <div className={styles.MetricsDisplayHeroMetaTitle}>
                         {SHOW.title}
                     </div>
-                    <div className={styles.MetricsDisplayHeroMetaReleaseDate}>
-                        {SHOW.first_air_date}
+                    <div className={styles.MetricsDisplayHeroMetaLogistics}>
+                        {SHOW.first_air_date.slice(0,4) + " • "}
+                        <span>{SHOW.number_of_seasons} {SHOW.number_of_seasons === 1 ? 'Season' : 'Seasons'}</span>
+                        {" • " + SHOW.genres.join(" • ")}
+                    </div>
+                    <div className={styles.MetricsDisplayHeroMetaPopularity}>
+                        {"TMDB Popularity: "}<span style={{color: tier.color}}>{tier.label}</span>
+                    </div>
+                    <div className={styles.MetricsDisplayHeroMetaOverview}>
+                        {SHOW.overview}
                     </div>
                 </div>
-           </div>
+            </div>
         </div>
     )
 

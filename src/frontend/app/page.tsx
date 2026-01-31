@@ -14,7 +14,7 @@ export default function Home() {
                 <div className={styles.HeaderSubtitle}>
                    Quantifying the art of the binge. 
                 </div>
-                <SearchBar/>
+                <SearchBar navBar={false}/>
             </div>
         </div>
     )

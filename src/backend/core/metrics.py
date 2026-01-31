@@ -11,14 +11,14 @@ def getStinkerScore(ratings: List[float]) -> float:
     stdev = statistics.stdev(ratings) if len(ratings) > 1 else 0
     avg = statistics.median(ratings)
 
-    return max(MAX_STINKER_SCORE, avg - (2 * stdev))
+    return round(max(MAX_STINKER_SCORE, avg - (2 * stdev)), 2)
 
 def getHighlightScore(ratings: List[float]) -> float:
     
     stdev = statistics.stdev(ratings) if len(ratings) > 1 else 0
     avg = statistics.median(ratings)
 
-    return min(MIN_HIGHLIGHT_SCORE, avg + (2 * stdev))
+    return round(min(MIN_HIGHLIGHT_SCORE, avg + (2 * stdev)), 2)
 
 def getLandThePlaneScore(ratings: List[float]) -> float:
 
@@ -223,12 +223,12 @@ def getShowMetrics(episodes: List[Episode]) -> ShowMetrics:
     metrics = ShowMetrics(
         watchability_score = watchability_score,
         average_rating = round(average_rating, 2),
-        high_rating = high_rating,
-        low_rating = low_rating,
+        high_rating = round(high_rating, 2),
+        low_rating = round(low_rating, 2),
         stinker_episodes = stinker_episodes,
-        stinker_rating = stinker_average,
+        stinker_rating = round(stinker_average, 2),
         highlight_episodes = highlight_episodes,
-        highlight_rating = highlight_average,
+        highlight_rating = round(highlight_average, 2),
         rating_consistency = rating_consistency,
         land_the_plane_score = land_the_plane_score,
         momentum_score = momentum_score,
