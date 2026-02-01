@@ -2,7 +2,7 @@ import styles from "styles/MetricsDisplay.module.css"
 
 import Link from "next/link"
 import SearchBar from "@/components/SearchBar"
-import { useWindowSize } from "@/hooks/useWindowSize"
+import { Card, CardHeader, CardDescription, CardTitle } from "@/components/ui/card"
 
 const POSTER_QUERY_URL = "https://image.tmdb.org/t/p/w780"
 const BACKDROP_QUERY_URL = "https://image.tmdb.org/t/p/original"
@@ -99,6 +99,27 @@ function getPopularityTier(score: number): { label: string; color: string } {
     return { label: "Low", color: "#60A5FA" }; // Dimmed
 }
 
+type MetricType = 'binge' | 'watchability' | 'momentum' | 'consistency' | 'rating' | 'land_the_plane';
+
+export function getMetricColor(value: number, type: MetricType): string {
+
+    const thresholds: Record<MetricType, { gold: number; green: number; orange: number }> = {
+        binge: { gold: 85, green: 60, orange: 35 },
+        watchability: { gold: 90, green: 70, orange: 40 },
+        momentum: { gold: 66, green: 55, orange: 45 },
+        consistency: { gold: 93, green: 80, orange: 60 },
+        rating: { gold: 9.0, green: 7.5, orange: 5.5 },
+        land_the_plane: { gold: 90, green: 75, orange: 60},
+    };
+
+    const t = thresholds[type];
+
+    if (value >= t.gold) return '#F02AD4';   // Magenta
+    if (value >= t.green) return '#22C55E';  // Green
+    if (value >= t.orange) return '#F97316'; // Orange
+    return '#EF4444';                        // Red
+}
+
 export default async function Page({searchParams,}:{searchParams: Promise<{ [key: string]: string | string[] | undefined}>}) {
 
     const { query } = await searchParams;
@@ -110,6 +131,11 @@ export default async function Page({searchParams,}:{searchParams: Promise<{ [key
 
     const POSTER_URL = POSTER_QUERY_URL + SHOW.poster_path;
     const BACKDROP_URL = BACKDROP_QUERY_URL + SHOW.backdrop_path;
+
+    const watchabilityColor = getMetricColor(SHOW.metrics.watchability_score, "watchability");
+    const bingeColor = getMetricColor(SHOW.metrics.binge_index, "binge");
+    const ratingConsistencyColor = getMetricColor(SHOW.metrics.rating_consistency, "consistency");
+    const landThePlaneColor = getMetricColor(SHOW.metrics.land_the_plane_score, "land_the_plane"); 
 
     return (
         <div className={styles.MetricsDisplayContainer}>
@@ -134,6 +160,48 @@ export default async function Page({searchParams,}:{searchParams: Promise<{ [key
                         {SHOW.overview}
                     </div>
                 </div>
+            </div>
+            <div className={styles.MetricsDisplayCardGridContainer}>
+                <Card className={styles.MetricsDisplayCardContainer}>
+                    <CardHeader className={styles.MetricsDisplayCardHeader}>
+                        <CardDescription className={styles.MetricsDisplayCardDescription}>
+                            Watchability Score
+                        </CardDescription>
+                        <CardTitle className={styles.MetricsDisplayCardTitle} style={{color: watchabilityColor}}>
+                            {SHOW.metrics.watchability_score}
+                        </CardTitle>
+                    </CardHeader>
+                </Card>
+                <Card className={styles.MetricsDisplayCardContainer}>
+                    <CardHeader className={styles.MetricsDisplayCardHeader}>
+                        <CardDescription className={styles.MetricsDisplayCardDescription}>
+                            Binge Index
+                        </CardDescription>
+                        <CardTitle className={styles.MetricsDisplayCardTitle} style={{color: bingeColor }}>
+                            {SHOW.metrics.binge_index}
+                        </CardTitle>
+                    </CardHeader>
+                </Card>
+                <Card className={styles.MetricsDisplayCardContainer}>
+                    <CardHeader className={styles.MetricsDisplayCardHeader}>
+                        <CardDescription className={styles.MetricsDisplayCardDescription}>
+                            Rating Consistency
+                        </CardDescription>
+                        <CardTitle className={styles.MetricsDisplayCardTitle} style={{color: ratingConsistencyColor}}>
+                            {SHOW.metrics.rating_consistency}
+                        </CardTitle>
+                    </CardHeader>
+                </Card>
+                <Card className={styles.MetricsDisplayCardContainer}>
+                    <CardHeader className={styles.MetricsDisplayCardHeader}>
+                        <CardDescription className={styles.MetricsDisplayCardDescription}>
+                            Land the Plane Score
+                        </CardDescription>
+                        <CardTitle className={styles.MetricsDisplayCardTitle} style={{color: landThePlaneColor}}>
+                            {SHOW.metrics.land_the_plane_score}
+                        </CardTitle>
+                    </CardHeader>
+                </Card>
             </div>
         </div>
     )

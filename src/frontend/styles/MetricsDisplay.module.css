@@ -21,14 +21,14 @@
         to bottom, 
         transparent 0%, 
         black 15%, 
-        black 85%, 
+        black 65%, 
         transparent 100%
       );
       mask-image: linear-gradient(
         to bottom, 
         transparent 0%, 
         black 15%, 
-        black 85%, 
+        black 65%, 
         transparent 100%
       );
 }
@@ -47,7 +47,7 @@
 }
 
 .MetricsDisplayHeroMetaLogistics {
-    font-size: var(--text-xs);
+    font-size: var(--text-sm);
     color: var(--muted-foreground);
     line-height: var(--leading-golden);
     letter-spacing: -0.01em;
@@ -55,7 +55,7 @@
 }
 
 .MetricsDisplayHeroMetaPopularity {
-    font-size: var(--text-xs);
+    font-size: var(--text-sm);
     color: var(--muted-foreground);
     line-height: var(--leading-golden);
 }
@@ -64,7 +64,32 @@
     color: var(--muted-foreground);
     font-size: var(--text-base);
     line-height: var(--leading-golden);
-    padding: var(--space-xs) 0 var(--space-xs);
+    padding: var(--space-sm) 0 var(--space-sm);
+}
+
+.MetricsDisplayCardGridContainer {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-sm);
+    justify-content: space-between;
+    padding: 0 var(--space-sm) var(--space-md);
+}
+
+.MetricsDisplayCardContainer {
+    border: 1px solid var(--border);
+}
+
+.MetricsDisplayCardHeader {
+    
+}
+
+.MetricsDisplayCardDescription {
+    font-size: var(--text-xs);
+}
+
+.MetricsDisplayCardTitle {
+    font-size: var(--text-md);
 }
 
 /* TABLETS */ 
