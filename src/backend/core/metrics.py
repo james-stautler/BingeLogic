@@ -154,7 +154,7 @@ def getWatchabilityScore(average_rating: float,
     trajectory_penalty = 0
     if is_serialized and land_the_plane_score < (average_rating * 10) - 12:
         crash_severity = (average_rating * 10) - land_the_plane_score
-        trajectory_penalty = crash_severity * 0.85
+        trajectory_penalty = np.sqrt(crash_severity) * 0.85
 
     tax_multiplier = max(0.4, 1.0 - (average_rating - 7.5)) if average_rating > 7.5 else 1.0
     consistency_tax = ((100 - rating_consistency) * 0.12) * tax_multiplier
