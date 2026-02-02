@@ -4,7 +4,7 @@ import { Line, LineChart, XAxis, YAxis, CartesianGrid, ReferenceLine } from "rec
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Card, CardHeader, CardFooter, CardContent, CardTitle, CardDescription } from "./ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { ShowModel, EpisodeModel } from "@/lib/showModel";
+import { ShowModel, EpisodeModel } from "@/components/showModel";
 import { useState } from "react";
 
 import styles from "styles/Graph.module.css"
