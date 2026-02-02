@@ -1,0 +1,63 @@
+
+.GraphContainer {
+    padding: 0 var(--space-sm) var(--space-md);
+}
+
+.CardContainer {
+    width: 100%;
+    border: 1px solid var(--border);
+    background-color: var(--color-background);
+}
+
+.CardContainer * {
+    background-color: transparent !important;
+}
+
+.CardHeader {
+    display: flex;
+    align-items: center;
+}
+
+.CardDescription {
+    font-size: var(--text-sm);
+    width: 100%;
+}
+
+.CardContent {
+}
+
+.ChartContainer {
+    width: 100%;
+    min-height: 300px;
+}
+
+.LineChart { 
+}
+
+.SelectTrigger, 
+.SelectContent {
+    background-color: var(--color-background);
+    border: 1px solid var(--color-border);
+    color: var(--muted-foreground);
+
+}
+
+.SelectContent * {
+    background-color: transparent !important;
+}
+
+.SelectContent {
+    box-shadow: none !important;
+}
+
+.SelectItem {
+    color: var(--muted-foreground) !important;
+}
+
+.SelectItem:hover,
+.SelectItem[data-highlighted],
+.SelectItem[data-state="checked"] {
+    background-color: rgba(255, 255, 255, 0.05) !important; /* Subtle highlight */
+    color: white !important;
+    outline: none !important;
+}

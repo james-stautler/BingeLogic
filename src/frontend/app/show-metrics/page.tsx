@@ -3,95 +3,12 @@ import styles from "styles/MetricsDisplay.module.css"
 import Link from "next/link"
 import SearchBar from "@/components/SearchBar"
 import { Card, CardHeader, CardDescription, CardTitle } from "@/components/ui/card"
+import mapToShowModel from "@/lib/showModel"
+import Graph from "@/components/Graph"
+import { ShowModel } from "@/lib/showModel"
 
 const POSTER_QUERY_URL = "https://image.tmdb.org/t/p/w780"
 const BACKDROP_QUERY_URL = "https://image.tmdb.org/t/p/original"
-
-interface MetricsModel {
-    watchability_score: number,
-    average_rating: number,
-    high_rating: number,
-    low_rating: number,
-    stinker_episodes: number[],
-    stinker_rating: number,
-    highlight_episodes: number[],
-    highlight_rating: number,
-    rating_consistency: number,
-    land_the_plane_score: number, 
-    momentum_score: number,
-    retention_rate: number, 
-    binge_index: number,
-}
-
-interface EpisodeModel {
-    id: number,
-    season_number: number,
-    episode_number: number,
-    title: string,
-    rating: number,
-    air_date: string,
-    vote_count: number
-}
-
-interface ShowModel {
-    id: number,
-    title: string,
-    overview: string,
-    poster_path: string,
-    backdrop_path: string,
-    first_air_date: string,
-    genres: string[],
-    number_of_seasons: number,
-    popularity: number,
-    metrics: MetricsModel,
-    last_updated: string,
-    episodes: EpisodeModel[]
-}
-
-function mapToShowModel(json: any): ShowModel {
-
-  return {
-    id: json.id,
-    title: json.title ?? "Unknown Title",
-    overview: json.overview ?? "",
-    poster_path: json.poster_path ?? "",
-    backdrop_path: json.backdrop_path ?? "",
-    first_air_date: json.first_air_date ?? "",
-    genres: Array.isArray(json.genres) ? json.genres : [],
-    number_of_seasons: json.number_of_seasons ?? 0,
-    popularity: json.popularity ?? 0,
-    last_updated: json.last_updated ?? new Date().toISOString(),
-    
-    metrics: {
-      watchability_score: json.metrics?.watchability_score ?? 0,
-      average_rating: json.metrics?.average_rating ?? 0,
-      high_rating: json.metrics?.high_rating ?? 0,
-      low_rating: json.metrics?.low_rating ?? 0,
-      stinker_episodes: json.metrics?.stinker_episodes ?? [],
-      stinker_rating: json.metrics?.stinker_rating ?? 0,
-      highlight_episodes: json.metrics?.highlight_episodes ?? [],
-      highlight_rating: json.metrics?.highlight_rating ?? 0,
-      rating_consistency: json.metrics?.rating_consistency ?? 0,
-      land_the_plane_score: json.metrics?.land_the_plane_score ?? 0,
-      momentum_score: json.metrics?.momentum_score ?? 0,
-      retention_rate: json.metrics?.retention_rate ?? 0,
-      binge_index: json.metrics?.binge_index ?? 0,
-    },
-
-    episodes: Array.isArray(json.episodes) 
-      ? json.episodes.map((ep: any): EpisodeModel => ({
-          id: ep.id,
-          season_number: ep.season_number,
-          episode_number: ep.episode_number,
-          title: ep.title ?? "Untitled Episode",
-          rating: ep.rating ?? 0,
-          air_date: ep.air_date ?? "",
-          vote_count: ep.vote_count ?? 0,
-        }))
-      : [],
-  };
-
-}
 
 function getPopularityTier(score: number): { label: string; color: string } {
     if (score >= 300) return { label: "High", color: "#FBBF24" }; // Emerald Green
@@ -114,10 +31,10 @@ export function getMetricColor(value: number, type: MetricType): string {
 
     const t = thresholds[type];
 
-    if (value >= t.gold) return '#F02AD4';   // Magenta
-    if (value >= t.green) return '#22C55E';  // Green
-    if (value >= t.orange) return '#F97316'; // Orange
-    return '#EF4444';                        // Red
+    if (value >= t.gold) return 'var(--magenta)';   
+    if (value >= t.green) return 'var(--green)';  
+    if (value >= t.orange) return 'var(--orange)';
+    return 'var(--red)';                        
 }
 
 export default async function Page({searchParams,}:{searchParams: Promise<{ [key: string]: string | string[] | undefined}>}) {
@@ -135,7 +52,7 @@ export default async function Page({searchParams,}:{searchParams: Promise<{ [key
     const watchabilityColor = getMetricColor(SHOW.metrics.watchability_score, "watchability");
     const bingeColor = getMetricColor(SHOW.metrics.binge_index, "binge");
     const ratingConsistencyColor = getMetricColor(SHOW.metrics.rating_consistency, "consistency");
-    const landThePlaneColor = getMetricColor(SHOW.metrics.land_the_plane_score, "land_the_plane"); 
+    const landThePlaneColor = getMetricColor(SHOW.metrics.land_the_plane_score, "land_the_plane");
 
     return (
         <div className={styles.MetricsDisplayContainer}>
@@ -203,6 +120,7 @@ export default async function Page({searchParams,}:{searchParams: Promise<{ [key
                     </CardHeader>
                 </Card>
             </div>
+            <Graph show={SHOW}/>
         </div>
     )
 

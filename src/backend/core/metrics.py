@@ -175,7 +175,7 @@ def getWatchabilityScore(average_rating: float,
     )
 
     if is_serialized and land_the_plane_score < 55:
-        final_score = min(final_score, 74.0)
+        final_score = min(final_score, 79.0)
 
     watchability_score = round(max(0.0, min(100.0, final_score)), 2)
 

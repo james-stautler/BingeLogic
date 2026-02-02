@@ -77,18 +77,22 @@
 }
 
 .MetricsDisplayCardContainer {
+    background-color: var(--colo-background);
     border: 1px solid var(--border);
 }
 
 .MetricsDisplayCardHeader {
-    
+   background-color: inherit; 
 }
 
 .MetricsDisplayCardDescription {
+    background-color: inherit;
+    color: var(--muted-foreground);
     font-size: var(--text-xs);
 }
 
 .MetricsDisplayCardTitle {
+    background-color: inherit;
     font-size: var(--text-md);
 }
 
