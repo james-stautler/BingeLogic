@@ -189,10 +189,10 @@ export default function Graph({ show }: { show: ShowModel }) {
                                 y={show.metrics.average_rating}
                                 stroke="var(--muted-foreground)"
                             />
-
+                            
                             <ReferenceLine
-                                y={show.metrics.stinker_rating}
-                                stroke="var(--red)"
+                                    y={show.metrics.stinker_rating}
+                                    stroke="var(--red)"
                             />
 
                             <ReferenceLine
