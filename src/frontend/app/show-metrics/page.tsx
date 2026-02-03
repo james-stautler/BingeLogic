@@ -45,6 +45,9 @@ export default async function Page({searchParams,}:{searchParams: Promise<{ [key
     const SHOW: ShowModel = mapToShowModel(data);
     const tier = getPopularityTier(SHOW.popularity);
 
+    const stinkerPercentage = 100 * (SHOW.metrics.stinker_episodes.length / SHOW.episodes.length);
+    const highlightPercentage = 100 * (SHOW.metrics.highlight_episodes.length / SHOW.episodes.length);
+
     const POSTER_URL = POSTER_QUERY_URL + SHOW.poster_path;
     const BACKDROP_URL = BACKDROP_QUERY_URL + SHOW.backdrop_path;
     
@@ -52,7 +55,7 @@ export default async function Page({searchParams,}:{searchParams: Promise<{ [key
     const highColor = getMetricColor(SHOW.metrics.high_rating, "rating");
     const lowColor = getMetricColor(SHOW.metrics.low_rating, "rating");
     const stinkerColor = getMetricColor(SHOW.metrics.stinker_rating, "rating");
-    const highlightColot = getMetricColor(SHOW.metrics.highlight_rating, "rating");
+    const highlightColor = getMetricColor(SHOW.metrics.highlight_rating, "rating");
     const watchabilityColor = getMetricColor(SHOW.metrics.watchability_score, "watchability");
     const bingeColor = getMetricColor(SHOW.metrics.binge_index, "binge");
     const ratingConsistencyColor = getMetricColor(SHOW.metrics.rating_consistency, "consistency");
@@ -61,125 +64,174 @@ export default async function Page({searchParams,}:{searchParams: Promise<{ [key
     const retentionColor = getMetricColor(SHOW.metrics.retention_rate, "retention");
 
     return (
-        <div className={styles.MetricsDisplayContainer}>
-            <SearchBar navBar={true} />
-            <div className={styles.MetricsDisplayHero}>
-                <div className={styles.MetricsDisplayHeroPoster}>
-                    <img src={BACKDROP_URL}/>
+        <div className={styles.MetricsPageContainer}>
+            <div className={styles.MetricsDisplayContainer}>
+                <SearchBar navBar={true} />
+                <div className={styles.MetricsDisplayHero}>
+                    <div className={styles.MetricsDisplayHeroPoster}>
+                        <img src={BACKDROP_URL}/>
+                    </div>
+                    <div className={styles.MetricsDisplayHeroMeta}>
+                        <div className={styles.MetricsDisplayHeroMetaTitle}>
+                            {SHOW.title}
+                        </div>
+                        <div className={styles.MetricsDisplayHeroMetaLogistics}>
+                            {SHOW.first_air_date.slice(0,4) + " • "}
+                            <span>{SHOW.number_of_seasons} {SHOW.number_of_seasons === 1 ? 'Season' : 'Seasons'}</span>
+                            {" • " + SHOW.genres.join(" • ")}
+                        </div>
+                        <div className={styles.MetricsDisplayHeroMetaPopularity}>
+                            {"TMDB Popularity: "}<span style={{color: tier.color}}>{tier.label}</span>
+                        </div>
+                        <div className={styles.MetricsDisplayHeroMetaOverview}>
+                            {SHOW.overview}
+                        </div>
+                    </div>
                 </div>
-                <div className={styles.MetricsDisplayHeroMeta}>
-                    <div className={styles.MetricsDisplayHeroMetaTitle}>
-                        {SHOW.title}
-                    </div>
-                    <div className={styles.MetricsDisplayHeroMetaLogistics}>
-                        {SHOW.first_air_date.slice(0,4) + " • "}
-                        <span>{SHOW.number_of_seasons} {SHOW.number_of_seasons === 1 ? 'Season' : 'Seasons'}</span>
-                        {" • " + SHOW.genres.join(" • ")}
-                    </div>
-                    <div className={styles.MetricsDisplayHeroMetaPopularity}>
-                        {"TMDB Popularity: "}<span style={{color: tier.color}}>{tier.label}</span>
-                    </div>
-                    <div className={styles.MetricsDisplayHeroMetaOverview}>
-                        {SHOW.overview}
+                <div className={styles.MetricsDisplayHeroCardGridContainer}>
+                    <Card className={styles.MetricsDisplayCardContainer}>
+                        <CardHeader className={styles.MetricsDisplayCardHeader}>
+                            <CardDescription className={styles.MetricsDisplayCardDescription}>
+                                Watchability Score
+                            </CardDescription>
+                            <CardTitle className={styles.MetricsDisplayCardTitle} style={{color: watchabilityColor}}>
+                                {SHOW.metrics.watchability_score}
+                            </CardTitle>
+                        </CardHeader>
+                    </Card>
+                    <Card className={styles.MetricsDisplayCardContainer}>
+                        <CardHeader className={styles.MetricsDisplayCardHeader}>
+                            <CardDescription className={styles.MetricsDisplayCardDescription}>
+                                Binge Index
+                            </CardDescription>
+                            <CardTitle className={styles.MetricsDisplayCardTitle} style={{color: bingeColor }}>
+                                {SHOW.metrics.binge_index}
+                            </CardTitle>
+                        </CardHeader>
+                    </Card>
+                    <Card className={styles.MetricsDisplayCardContainer}>
+                        <CardHeader className={styles.MetricsDisplayCardHeader}>
+                            <CardDescription className={styles.MetricsDisplayCardDescription}>
+                                Rating Consistency
+                            </CardDescription>
+                            <CardTitle className={styles.MetricsDisplayCardTitle} style={{color: ratingConsistencyColor}}>
+                                {SHOW.metrics.rating_consistency}
+                            </CardTitle>
+                        </CardHeader>
+                    </Card>
+                    <Card className={styles.MetricsDisplayCardContainer}>
+                        <CardHeader className={styles.MetricsDisplayCardHeader}>
+                            <CardDescription className={styles.MetricsDisplayCardDescription}>
+                                Land the Plane Score
+                            </CardDescription>
+                            <CardTitle className={styles.MetricsDisplayCardTitle} style={{color: landThePlaneColor}}>
+                                {SHOW.metrics.land_the_plane_score}
+                            </CardTitle>
+                        </CardHeader>
+                    </Card>
+                    <Card className={styles.MetricsDisplayCardContainer}>
+                        <CardHeader className={styles.MetricsDisplayCardHeader}>
+                            <CardDescription className={styles.MetricsDisplayCardDescription}>
+                                Momentum Score
+                            </CardDescription>
+                            <CardTitle className={styles.MetricsDisplayCardTitle} style={{color: momentumColor}}>
+                                {SHOW.metrics.momentum_score}
+                            </CardTitle>
+                        </CardHeader>
+                    </Card>
+                    <Card className={styles.MetricsDisplayCardContainer}>
+                        <CardHeader className={styles.MetricsDisplayCardHeader}>
+                            <CardDescription className={styles.MetricsDisplayCardDescription}>
+                                Retention Rate
+                            </CardDescription>
+                            <CardTitle className={styles.MetricsDisplayCardTitle} style={{color: retentionColor}}>
+                                {SHOW.metrics.retention_rate}
+                            </CardTitle>
+                        </CardHeader>
+                    </Card>
+                </div>
+                <div className={styles.MetricsDisplayGranularDataContainer}> 
+                    <Graph show={SHOW}/>
+                    <div className={styles.MetricsDisplayGranularCardContainer}>
+                        <div className={styles.MetricsDisplayRatingCardContainer}>
+                            <Card className={styles.MetricsDisplayCardContainer}>
+                                <CardHeader className={styles.MetricsDisplayCardHeader}>
+                                    <CardDescription className={styles.MetricsDisplayCardDescription}>
+                                        Average
+        </CardDescription>
+                                    <CardTitle className={styles.MetricsDisplayCardTitle} style={{color: averageColor}}>
+                                        {SHOW.metrics.average_rating}
+                                    </CardTitle>
+                                </CardHeader>
+                            </Card>
+                            <Card className={styles.MetricsDisplayCardContainer}>
+                                <CardHeader className={styles.MetricsDisplayCardHeader}>
+                                    <CardDescription className={styles.MetricsDisplayCardDescription}>
+                                        High
+                                    </CardDescription>
+                                    <CardTitle className={styles.MetricsDisplayCardTitle} style={{color: highColor}}>
+                                        {SHOW.metrics.high_rating}
+                                    </CardTitle>
+                                </CardHeader>
+                            </Card>
+                            <Card className={styles.MetricsDisplayCardContainer}>
+                                <CardHeader className={styles.MetricsDisplayCardHeader}>
+                                    <CardDescription className={styles.MetricsDisplayCardDescription}>
+                                        Low
+                                    </CardDescription>
+                                    <CardTitle className={styles.MetricsDisplayCardTitle} style={{color: lowColor}}>
+                                        {SHOW.metrics.low_rating}
+                                    </CardTitle>
+                                </CardHeader>
+                            </Card>
+                        </div>
+                        <div className={styles.MetricsDisplayLongRatingCardContainer}>
+                            <Card className={styles.MetricsDisplayCardContainer}>
+                                <CardHeader className={styles.MetricsDisplayCardHeader}>
+                                    <CardDescription className={styles.MetricsDisplayCardDescription}>
+                                        Average Highlight Rating
+                                    </CardDescription>
+                                    <CardTitle className={styles.MetricsDisplayCardTitle} style={{color: highlightColor}}>
+                                        {SHOW.metrics.highlight_rating}
+                                    </CardTitle>
+                                </CardHeader>
+                            </Card>
+                            <Card className={styles.MetricsDisplayCardContainer}>
+                                <CardHeader className={styles.MetricsDisplayCardHeader}>
+                                    <CardDescription className={styles.MetricsDisplayCardDescription}>
+                                        Highlight Episode Count
+                                    </CardDescription>
+                                    <CardTitle className={styles.MetricsDisplayCardTitle} style={{color: highlightColor}}>
+                                        {SHOW.metrics.highlight_episodes.length + " (" + highlightPercentage.toFixed(2) + "%)"}
+                                    </CardTitle>
+                                </CardHeader>
+                            </Card>
+                            <Card className={styles.MetricsDisplayCardContainer}>
+                                <CardHeader className={styles.MetricsDisplayCardHeader}>
+                                    <CardDescription className={styles.MetricsDisplayCardDescription}>
+                                        Average Stinker Rating
+                                    </CardDescription>
+                                    <CardTitle className={styles.MetricsDisplayCardTitle} style={{color: stinkerColor}}>
+                                        {SHOW.metrics.stinker_rating}
+                                    </CardTitle>
+                                </CardHeader>
+                            </Card>
+                            <Card className={styles.MetricsDisplayCardContainer}>
+                                <CardHeader className={styles.MetricsDisplayCardHeader}>
+                                    <CardDescription className={styles.MetricsDisplayCardDescription}>
+                                        Stinker Episode Count
+                                    </CardDescription>
+                                    <CardTitle className={styles.MetricsDisplayCardTitle} style={{color: stinkerColor}}>
+                                        {SHOW.metrics.stinker_episodes.length + " (" + stinkerPercentage.toFixed(2) + "%)"}
+                                    </CardTitle>
+                                </CardHeader>
+                            </Card>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div className={styles.MetricsDisplayHeroCardGridContainer}>
-                <Card className={styles.MetricsDisplayCardContainer}>
-                    <CardHeader className={styles.MetricsDisplayCardHeader}>
-                        <CardDescription className={styles.MetricsDisplayCardDescription}>
-                            Watchability Score
-                        </CardDescription>
-                        <CardTitle className={styles.MetricsDisplayCardTitle} style={{color: watchabilityColor}}>
-                            {SHOW.metrics.watchability_score}
-                        </CardTitle>
-                    </CardHeader>
-                </Card>
-                <Card className={styles.MetricsDisplayCardContainer}>
-                    <CardHeader className={styles.MetricsDisplayCardHeader}>
-                        <CardDescription className={styles.MetricsDisplayCardDescription}>
-                            Binge Index
-                        </CardDescription>
-                        <CardTitle className={styles.MetricsDisplayCardTitle} style={{color: bingeColor }}>
-                            {SHOW.metrics.binge_index}
-                        </CardTitle>
-                    </CardHeader>
-                </Card>
-                <Card className={styles.MetricsDisplayCardContainer}>
-                    <CardHeader className={styles.MetricsDisplayCardHeader}>
-                        <CardDescription className={styles.MetricsDisplayCardDescription}>
-                            Rating Consistency
-                        </CardDescription>
-                        <CardTitle className={styles.MetricsDisplayCardTitle} style={{color: ratingConsistencyColor}}>
-                            {SHOW.metrics.rating_consistency}
-                        </CardTitle>
-                    </CardHeader>
-                </Card>
-                <Card className={styles.MetricsDisplayCardContainer}>
-                    <CardHeader className={styles.MetricsDisplayCardHeader}>
-                        <CardDescription className={styles.MetricsDisplayCardDescription}>
-                            Land the Plane Score
-                        </CardDescription>
-                        <CardTitle className={styles.MetricsDisplayCardTitle} style={{color: landThePlaneColor}}>
-                            {SHOW.metrics.land_the_plane_score}
-                        </CardTitle>
-                    </CardHeader>
-                </Card>
-                <Card className={styles.MetricsDisplayCardContainer}>
-                    <CardHeader className={styles.MetricsDisplayCardHeader}>
-                        <CardDescription className={styles.MetricsDisplayCardDescription}>
-                            Momentum Score
-                        </CardDescription>
-                        <CardTitle className={styles.MetricsDisplayCardTitle} style={{color: momentumColor}}>
-                            {SHOW.metrics.momentum_score}
-                        </CardTitle>
-                    </CardHeader>
-                </Card>
-                <Card className={styles.MetricsDisplayCardContainer}>
-                    <CardHeader className={styles.MetricsDisplayCardHeader}>
-                        <CardDescription className={styles.MetricsDisplayCardDescription}>
-                            Retention Rate
-                        </CardDescription>
-                        <CardTitle className={styles.MetricsDisplayCardTitle} style={{color: retentionColor}}>
-                            {SHOW.metrics.retention_rate}
-                        </CardTitle>
-                    </CardHeader>
-                </Card>
-            </div>
-            <div className={styles.MetricsDisplayGranularDataContainer}> 
-                <Graph show={SHOW}/>
-                <div className={styles.MetricsDisplayRatingCardContainer}>
-                    <Card className={styles.MetricsDisplayCardContainer}>
-                        <CardHeader className={styles.MetricsDisplayCardHeader}>
-                            <CardDescription className={styles.MetricsDisplayCardDescription}>
-                                Average
-                            </CardDescription>
-                            <CardTitle className={styles.MetricsDisplayCardTitle} style={{color: averageColor}}>
-                                {SHOW.metrics.average_rating}
-                            </CardTitle>
-                        </CardHeader>
-                    </Card>
-                    <Card className={styles.MetricsDisplayCardContainer}>
-                        <CardHeader className={styles.MetricsDisplayCardHeader}>
-                            <CardDescription className={styles.MetricsDisplayCardDescription}>
-                                High
-                            </CardDescription>
-                            <CardTitle className={styles.MetricsDisplayCardTitle} style={{color: highColor}}>
-                                {SHOW.metrics.high_rating}
-                            </CardTitle>
-                        </CardHeader>
-                    </Card>
-                    <Card className={styles.MetricsDisplayCardContainer}>
-                        <CardHeader className={styles.MetricsDisplayCardHeader}>
-                            <CardDescription className={styles.MetricsDisplayCardDescription}>
-                                Low
-                            </CardDescription>
-                            <CardTitle className={styles.MetricsDisplayCardTitle} style={{color: lowColor}}>
-                                {SHOW.metrics.low_rating}
-                            </CardTitle>
-                        </CardHeader>
-                    </Card>
-                </div>
+            <div className={styles.MetricsDisplayHelpLink}>
+                What do these values mean?
             </div>
         </div>
     )

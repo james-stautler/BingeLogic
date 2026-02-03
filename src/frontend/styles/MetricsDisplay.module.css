@@ -1,6 +1,11 @@
 
 /* MOBILE */
 
+.MetricsPageContainer {
+    display: flex;
+    flex-direction: column;
+}
+
 .MetricsDisplayContainer {
     display: flex;
     flex-direction: column;
@@ -104,27 +109,71 @@
 .MetricsDisplayRatingCardContainer {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    padding: 0 var(--space-sm) var(--space-sm);
     gap: var(--space-sm);
+    padding: 0 var(--space-sm) var(--space-sm);
+}
+
+.MetricsDisplayLongRatingCardContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-sm);
+    padding: 0 var(--space-sm) 0;
+}
+
+.MetricsDisplayHelpLink {
+    display: flex;
+    justify-content: center;
+    color: #87CEEB;
+    font-size: var(--text-sm);
+
+    padding-top: var(--space-md);
+    padding-bottom: var(--space-lg);
+}
+
+.MetricsDisplayHelpLink:hover {
+    opacity: 0.8;
+    cursor: pointer;
 }
 
 /* TABLETS */ 
 
 @media (min-width: 768px) {
 
-
+    .MetricsDisplayHeroCardGridContainer {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
 }
 
 /* SMALL DESKTOPS */
 
 @media (min-width: 1024px) {
 
+    .MetricsPageContainer {
+        align-items: center;
+    }
+
+    .MetricsDisplayContainer {
+        max-width: 1280px;
+    }
+
+    .MetricsDisplayGranularDataContainer {
+        display: grid;
+        grid-template-columns: 2fr 2fr;
+    }
+
+    .MetricsDisplayGranularCardContainer {
+        display: grid;
+        grid-template-rows: 1fr 2fr 2fr;
+    }
+
+    .MetricsDisplayLongRatingCardContainer {
+        grid-template-columns: 1fr 1fr;
+    } 
 
 }
 
 /* DESKTOPS+ */
 
 @media (min-width: 1440px) {
-
 
 }
