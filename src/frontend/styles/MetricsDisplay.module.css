@@ -67,7 +67,7 @@
     padding: var(--space-sm) 0 var(--space-sm);
 }
 
-.MetricsDisplayCardGridContainer {
+.MetricsDisplayHeroCardGridContainer {
     display: grid;
     width: 100%;
     grid-template-columns: 1fr 1fr;
@@ -94,6 +94,18 @@
 .MetricsDisplayCardTitle {
     background-color: inherit;
     font-size: var(--text-md);
+}
+
+.MetricsDisplayGranularDataContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.MetricsDisplayRatingCardContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    padding: 0 var(--space-sm) var(--space-sm);
+    gap: var(--space-sm);
 }
 
 /* TABLETS */ 

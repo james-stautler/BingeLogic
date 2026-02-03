@@ -1,11 +1,13 @@
 "use client";
 
 import { Line, LineChart, XAxis, YAxis, CartesianGrid, ReferenceLine } from "recharts";
-import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { Card, CardHeader, CardFooter, CardContent, CardTitle, CardDescription } from "./ui/card";
+import { ChartConfig, ChartContainer, ChartTooltip } from "@/components/ui/chart";
+import { Card, CardHeader, CardContent, CardDescription } from "./ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { ShowModel, EpisodeModel } from "@/components/showModel";
 import { useState } from "react";
+import { Checkbox } from "./ui/checkbox";
+import { Label } from "@/components/ui/label"
 
 import styles from "styles/Graph.module.css"
 
@@ -71,6 +73,9 @@ function getChartConfig(episodes: EpisodeModel[]): ChartConfig {
 export default function Graph({ show }: { show: ShowModel }) {
 
     const [ activeSeason, selectSeason ] = useState("all");
+    const [ showAvg, setShowAvg ] = useState(false);
+    const [ showStinker, setShowStinker ] = useState(false);
+    const [ showHighlight, setShowHighlight ] = useState(false);
 
     const { continuousData, overlapData } = getChartComponents(show.episodes); 
     const chartConfig = getChartConfig(show.episodes);
@@ -185,22 +190,51 @@ export default function Graph({ show }: { show: ShowModel }) {
                                 />
                             )}
 
-                            <ReferenceLine
+                            {showAvg && <ReferenceLine
                                 y={show.metrics.average_rating}
                                 stroke="var(--muted-foreground)"
-                            />
+                            />}
                             
-                            <ReferenceLine
+                            {showStinker && <ReferenceLine
                                     y={show.metrics.stinker_rating}
                                     stroke="var(--red)"
-                            />
+                            />}
 
-                            <ReferenceLine
+                            {showHighlight && <ReferenceLine
                                 y={show.metrics.highlight_rating}
                                 stroke="var(--magenta)"
-                            />
+                            />}
+
                         </LineChart>
                     </ChartContainer>
+                    <div className={styles.CheckboxContainer}>
+                        <div className="flex items-center space-x-2">
+                            <Checkbox 
+                                id="avg" 
+                                checked={showAvg} 
+                                onCheckedChange={(checked) => setShowAvg(!!checked)} 
+                            />
+                            <Label htmlFor="avg" className="text-xs text-muted-foreground">Series Average Rating</Label>
+                        </div>
+
+                        <div className="flex items-center space-x-2">
+                            <Checkbox 
+                                id="stinker" 
+                                checked={showStinker} 
+                                onCheckedChange={(checked) => setShowStinker(!!checked)} 
+                            />
+                            <Label htmlFor="stinker" className="text-xs text-muted-foreground">Series Stinker Rating</Label>
+                        </div>
+
+                        <div className="flex items-center space-x-2">
+                            <Checkbox 
+                                id="highlight" 
+                                checked={showHighlight} 
+                                onCheckedChange={(checked) => setShowHighlight(!!checked)} 
+                            />
+                            <Label htmlFor="highlight" className="text-xs text-muted-foreground">Series Highlight Rating</Label>
+                        </div>
+                    </div> 
                 </CardContent>
             </Card>
         </div>

@@ -1,6 +1,5 @@
 import styles from "styles/MetricsDisplay.module.css"
 
-import Link from "next/link"
 import SearchBar from "@/components/SearchBar"
 import { Card, CardHeader, CardDescription, CardTitle } from "@/components/ui/card"
 import mapToShowModel, { ShowModel } from "@/components/showModel"
@@ -15,7 +14,7 @@ function getPopularityTier(score: number): { label: string; color: string } {
     return { label: "Low", color: "#60A5FA" }; // Dimmed
 }
 
-type MetricType = 'binge' | 'watchability' | 'momentum' | 'consistency' | 'rating' | 'land_the_plane';
+type MetricType = 'binge' | 'watchability' | 'momentum' | 'consistency' | 'rating' | 'land_the_plane' | 'retention';
 
 export function getMetricColor(value: number, type: MetricType): string {
 
@@ -26,6 +25,7 @@ export function getMetricColor(value: number, type: MetricType): string {
         consistency: { gold: 93, green: 80, orange: 60 },
         rating: { gold: 9.0, green: 7.5, orange: 5.5 },
         land_the_plane: { gold: 90, green: 75, orange: 60},
+        retention: { gold: 75, green: 55, orange: 40 },
     };
 
     const t = thresholds[type];
@@ -47,11 +47,18 @@ export default async function Page({searchParams,}:{searchParams: Promise<{ [key
 
     const POSTER_URL = POSTER_QUERY_URL + SHOW.poster_path;
     const BACKDROP_URL = BACKDROP_QUERY_URL + SHOW.backdrop_path;
-
+    
+    const averageColor = getMetricColor(SHOW.metrics.average_rating, "rating");
+    const highColor = getMetricColor(SHOW.metrics.high_rating, "rating");
+    const lowColor = getMetricColor(SHOW.metrics.low_rating, "rating");
+    const stinkerColor = getMetricColor(SHOW.metrics.stinker_rating, "rating");
+    const highlightColot = getMetricColor(SHOW.metrics.highlight_rating, "rating");
     const watchabilityColor = getMetricColor(SHOW.metrics.watchability_score, "watchability");
     const bingeColor = getMetricColor(SHOW.metrics.binge_index, "binge");
     const ratingConsistencyColor = getMetricColor(SHOW.metrics.rating_consistency, "consistency");
     const landThePlaneColor = getMetricColor(SHOW.metrics.land_the_plane_score, "land_the_plane");
+    const momentumColor = getMetricColor(SHOW.metrics.momentum_score, "momentum");
+    const retentionColor = getMetricColor(SHOW.metrics.retention_rate, "retention");
 
     return (
         <div className={styles.MetricsDisplayContainer}>
@@ -77,7 +84,7 @@ export default async function Page({searchParams,}:{searchParams: Promise<{ [key
                     </div>
                 </div>
             </div>
-            <div className={styles.MetricsDisplayCardGridContainer}>
+            <div className={styles.MetricsDisplayHeroCardGridContainer}>
                 <Card className={styles.MetricsDisplayCardContainer}>
                     <CardHeader className={styles.MetricsDisplayCardHeader}>
                         <CardDescription className={styles.MetricsDisplayCardDescription}>
@@ -118,8 +125,62 @@ export default async function Page({searchParams,}:{searchParams: Promise<{ [key
                         </CardTitle>
                     </CardHeader>
                 </Card>
+                <Card className={styles.MetricsDisplayCardContainer}>
+                    <CardHeader className={styles.MetricsDisplayCardHeader}>
+                        <CardDescription className={styles.MetricsDisplayCardDescription}>
+                            Momentum Score
+                        </CardDescription>
+                        <CardTitle className={styles.MetricsDisplayCardTitle} style={{color: momentumColor}}>
+                            {SHOW.metrics.momentum_score}
+                        </CardTitle>
+                    </CardHeader>
+                </Card>
+                <Card className={styles.MetricsDisplayCardContainer}>
+                    <CardHeader className={styles.MetricsDisplayCardHeader}>
+                        <CardDescription className={styles.MetricsDisplayCardDescription}>
+                            Retention Rate
+                        </CardDescription>
+                        <CardTitle className={styles.MetricsDisplayCardTitle} style={{color: retentionColor}}>
+                            {SHOW.metrics.retention_rate}
+                        </CardTitle>
+                    </CardHeader>
+                </Card>
             </div>
-            <Graph show={SHOW}/>
+            <div className={styles.MetricsDisplayGranularDataContainer}> 
+                <Graph show={SHOW}/>
+                <div className={styles.MetricsDisplayRatingCardContainer}>
+                    <Card className={styles.MetricsDisplayCardContainer}>
+                        <CardHeader className={styles.MetricsDisplayCardHeader}>
+                            <CardDescription className={styles.MetricsDisplayCardDescription}>
+                                Average
+                            </CardDescription>
+                            <CardTitle className={styles.MetricsDisplayCardTitle} style={{color: averageColor}}>
+                                {SHOW.metrics.average_rating}
+                            </CardTitle>
+                        </CardHeader>
+                    </Card>
+                    <Card className={styles.MetricsDisplayCardContainer}>
+                        <CardHeader className={styles.MetricsDisplayCardHeader}>
+                            <CardDescription className={styles.MetricsDisplayCardDescription}>
+                                High
+                            </CardDescription>
+                            <CardTitle className={styles.MetricsDisplayCardTitle} style={{color: highColor}}>
+                                {SHOW.metrics.high_rating}
+                            </CardTitle>
+                        </CardHeader>
+                    </Card>
+                    <Card className={styles.MetricsDisplayCardContainer}>
+                        <CardHeader className={styles.MetricsDisplayCardHeader}>
+                            <CardDescription className={styles.MetricsDisplayCardDescription}>
+                                Low
+                            </CardDescription>
+                            <CardTitle className={styles.MetricsDisplayCardTitle} style={{color: lowColor}}>
+                                {SHOW.metrics.low_rating}
+                            </CardTitle>
+                        </CardHeader>
+                    </Card>
+                </div>
+            </div>
         </div>
     )
 

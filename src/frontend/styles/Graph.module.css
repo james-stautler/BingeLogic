@@ -61,3 +61,14 @@
     color: white !important;
     outline: none !important;
 }
+
+.CheckboxContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    color: var(--muted-foreground);
+    margin-top: var(--space-md);
+    gap: var(--space-sm);
+    font-size: var(--text-xs);
+    
+}
