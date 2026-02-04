@@ -1,5 +1,6 @@
 import os
-from fastapi import APIRouter, Query, BackgroundTasks, Header, HTTPException
+from fastapi import APIRouter, Query, BackgroundTasks, Header, HTTPException, Depends, FastAPI
+from fastapi.security import OAuth2PasswordBearer
 from datetime import datetime, timedelta, timezone
 from services.tmdb_service import tmdb_get_show_details, tmdb_get_shows, tmdb_get_episodes_all_seasons
 from crud.modeledQueries import db_get_show_by_id,db_insert_show, db_delete_show, db_delete_many_shows, db_get_cursor
@@ -7,6 +8,7 @@ from core.metrics import getShowMetrics
 from db.mongodb import db, DatabaseCollections
 
 shows_router = APIRouter()
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 @shows_router.get("/suggestions")
 async def get_suggestions(query: str = Query(..., min_length=2)):
@@ -58,7 +60,7 @@ async def cleanup():
         await db_delete_many_shows(ids_to_delete) 
     
 @shows_router.post("/cleanup")
-async def trigger_cleanup(backgroundTasks: BackgroundTasks, token: str = Header(None)):
+async def trigger_cleanup(backgroundTasks: BackgroundTasks, token: str = Depends(oauth2_scheme)):
     
     if token != os.getenv("CLEANUP_TOKEN"):
         raise HTTPException(status_code=403)
