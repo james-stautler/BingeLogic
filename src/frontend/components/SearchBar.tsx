@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useRouter } from 'next/navigation';
 import { useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 const SUGGESTION_LIMIT = 4;
 const POSTER_QUERY_URL = "https://image.tmdb.org/t/p/w92"
@@ -37,8 +38,8 @@ export default function SearchBar({navBar} : {navBar : boolean}) {
     const [query, setQuery] = useState('');
     const [debouncedQuery, setDebouncedQuery] = useState('');
     const [suggestions, setSuggestions] = useState<SearchResult[]>([]);
+    const [loading, setLoading] = useState(false);
 
-    const [error, setError] = useState(false);
     const router = useRouter();
     
     useEffect(() => {
@@ -59,23 +60,34 @@ export default function SearchBar({navBar} : {navBar : boolean}) {
                 return;
             }
 
-            const queryResults = await getSuggestions(debouncedQuery);
-            
-            if (queryResults) {
-                const search_results: SearchResult[] = queryResults.map((item: any) => ({
-                    tmdb_id: item.tmdb_id,
-                    title: item.title,
-                    poster_path: item.poster_path,
-                    release_date: item.release_date
-                }));
+            setSuggestions([]) 
+            setLoading(true);
 
-                setSuggestions(search_results.splice(0, SUGGESTION_LIMIT)); 
-            }
-            else {
-                setSuggestions([]);
-            }
+            setTimeout(async () => {
+                try {
+                    const queryResults = await getSuggestions(debouncedQuery);
+
+                    if (queryResults) {
+                        const search_results: SearchResult[] = queryResults.map((item: any) => ({
+                            tmdb_id: item.tmdb_id,
+                            title: item.title,
+                            poster_path: item.poster_path,
+                            release_date: item.release_date
+                        }));
+
+                        setSuggestions(search_results.splice(0, SUGGESTION_LIMIT)); 
+                    }
+                    else {
+                        setSuggestions([]);
+                    }
+                } catch (err) {
+                    console.log(err);
+                } finally {
+                    setLoading(false);
+                }
+            }, 0);
         };
-
+        
         fetchResults();
 
     }, [debouncedQuery]);
@@ -148,6 +160,16 @@ export default function SearchBar({navBar} : {navBar : boolean}) {
                         </div>
                     </Link>
                 ))}
+            </div>
+            <div className={`${styles.Loading} ${(loading && !navBar) ? styles.visible : ''}`}>
+               <Image 
+                    src="/loading.gif" 
+                    alt="Loading..." 
+                    width={128} 
+                    height={128} 
+                    unoptimized // Necessary for GIFs to animate properly in Next.js
+                />
+                Initial requests can take ~1 minute (sorry, I'm on free tier hosting)
             </div>
         </div>
     );

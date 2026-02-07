@@ -157,7 +157,7 @@ export default async function Page({searchParams,}:{searchParams: Promise<{ [key
                             <Card className={styles.MetricsDisplayCardContainer}>
                                 <CardHeader className={styles.MetricsDisplayCardHeader}>
                                     <CardDescription className={styles.MetricsDisplayCardDescription}>
-                                        Average
+                                        Average Rating
         </CardDescription>
                                     <CardTitle className={styles.MetricsDisplayCardTitle} style={{color: averageColor}}>
                                         {SHOW.metrics.average_rating}
@@ -167,7 +167,7 @@ export default async function Page({searchParams,}:{searchParams: Promise<{ [key
                             <Card className={styles.MetricsDisplayCardContainer}>
                                 <CardHeader className={styles.MetricsDisplayCardHeader}>
                                     <CardDescription className={styles.MetricsDisplayCardDescription}>
-                                        High
+                                        High Rating
                                     </CardDescription>
                                     <CardTitle className={styles.MetricsDisplayCardTitle} style={{color: highColor}}>
                                         {SHOW.metrics.high_rating}
@@ -177,7 +177,7 @@ export default async function Page({searchParams,}:{searchParams: Promise<{ [key
                             <Card className={styles.MetricsDisplayCardContainer}>
                                 <CardHeader className={styles.MetricsDisplayCardHeader}>
                                     <CardDescription className={styles.MetricsDisplayCardDescription}>
-                                        Low
+                                        Low Rating
                                     </CardDescription>
                                     <CardTitle className={styles.MetricsDisplayCardTitle} style={{color: lowColor}}>
                                         {SHOW.metrics.low_rating}
