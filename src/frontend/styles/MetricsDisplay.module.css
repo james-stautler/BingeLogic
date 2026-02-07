@@ -41,7 +41,7 @@
 .MetricsDisplayHeroMeta {
     display: flex;
     flex-direction: column;
-    padding: var(--space-md) var(--space-sm) var(--space-md);
+    padding: var(--space-md) var(--space-sm) 0;
 }
 
 .MetricsDisplayHeroMetaTitle {
@@ -122,12 +122,10 @@
 
 .MetricsDisplayHelpLink {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     color: #87CEEB;
     font-size: var(--text-sm);
-
-    padding-top: var(--space-md);
-    padding-bottom: var(--space-lg);
+    padding: var(--space-md) var(--space-sm) var(--space-md);
 }
 
 .MetricsDisplayHelpLink:hover {

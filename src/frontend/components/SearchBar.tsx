@@ -58,8 +58,6 @@ export default function SearchBar({navBar} : {navBar : boolean}) {
                 return;
             }
 
-            setSuggestions([]) 
-
             const queryResults = await getSuggestions(debouncedQuery);
 
             if (queryResults) {
@@ -106,10 +104,6 @@ export default function SearchBar({navBar} : {navBar : boolean}) {
                 router.push("/show-metrics?query=" + result.tmdb_id); 
             }
         }
-    }
-
-    if (suggestions.length != 0) {
-        console.log(suggestions);
     }
 
     return (

@@ -96,7 +96,7 @@ export default function Graph({ show }: { show: ShowModel }) {
                                 <SelectValue/>
                             </SelectTrigger>
                             <SelectContent position="popper" className={styles.SelectContent}>
-                                <SelectItem value="all">Complete Series</SelectItem>
+                                <SelectItem className={styles.SelectItem} value="all">Complete Series</SelectItem>
                                 {Object.keys(chartConfig).map((key) => (
                                     <SelectItem className={styles.SelectItem} key={key} value={key}>
                                         {chartConfig[key].label}

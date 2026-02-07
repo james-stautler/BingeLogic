@@ -48,7 +48,6 @@ export default async function Page({searchParams,}:{searchParams: Promise<{ [key
     const stinkerPercentage = 100 * (SHOW.metrics.stinker_episodes.length / SHOW.episodes.length);
     const highlightPercentage = 100 * (SHOW.metrics.highlight_episodes.length / SHOW.episodes.length);
 
-    const POSTER_URL = POSTER_QUERY_URL + SHOW.poster_path;
     const BACKDROP_URL = BACKDROP_QUERY_URL + SHOW.backdrop_path;
     
     const averageColor = getMetricColor(SHOW.metrics.average_rating, "rating");
@@ -87,6 +86,9 @@ export default async function Page({searchParams,}:{searchParams: Promise<{ [key
                             {SHOW.overview}
                         </div>
                     </div>
+                </div>
+                <div className={styles.MetricsDisplayHelpLink}>
+                    What do these metrics mean?
                 </div>
                 <div className={styles.MetricsDisplayHeroCardGridContainer}>
                     <Card className={styles.MetricsDisplayCardContainer}>
@@ -202,7 +204,8 @@ export default async function Page({searchParams,}:{searchParams: Promise<{ [key
                                         Highlight Episode Count
                                     </CardDescription>
                                     <CardTitle className={styles.MetricsDisplayCardTitle} style={{color: highlightColor}}>
-                                        {SHOW.metrics.highlight_episodes.length + " (" + highlightPercentage.toFixed(2) + "%)"}
+                                        {SHOW.metrics.highlight_episodes.length} <span className="text-sm">{" (" + highlightPercentage.toFixed(2) + "%)"}</span>
+
                                     </CardTitle>
                                 </CardHeader>
                             </Card>
@@ -222,16 +225,13 @@ export default async function Page({searchParams,}:{searchParams: Promise<{ [key
                                         Stinker Episode Count
                                     </CardDescription>
                                     <CardTitle className={styles.MetricsDisplayCardTitle} style={{color: stinkerColor}}>
-                                        {SHOW.metrics.stinker_episodes.length + " (" + stinkerPercentage.toFixed(2) + "%)"}
+                                        {SHOW.metrics.stinker_episodes.length} <span className="text-sm">{" (" + stinkerPercentage.toFixed(2) + "%)"}</span>
                                     </CardTitle>
                                 </CardHeader>
                             </Card>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className={styles.MetricsDisplayHelpLink}>
-                What do these values mean?
             </div>
         </div>
     )
