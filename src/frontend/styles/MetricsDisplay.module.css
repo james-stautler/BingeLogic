@@ -11,6 +11,25 @@
     flex-direction: column;
 }
 
+.MetricsDisplayNav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.MetricsDisplayNavHome {
+    margin-top: var(--space-md);
+    color: var(--foreground);
+    font-size: var(--text-base);
+    letter-spacing: 3px;
+}
+
+.MetricsDisplayNavHome:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+
 .MetricsDisplayHero {
     display: flex;
     flex-direction: column;

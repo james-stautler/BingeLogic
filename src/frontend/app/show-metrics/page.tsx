@@ -4,6 +4,7 @@ import SearchBar from "@/components/SearchBar"
 import { Card, CardHeader, CardDescription, CardTitle } from "@/components/ui/card"
 import mapToShowModel, { ShowModel } from "@/components/showModel"
 import Graph from "../../components/Graph"
+import Link from "next/link"
 
 const POSTER_QUERY_URL = "https://image.tmdb.org/t/p/w780"
 const BACKDROP_QUERY_URL = "https://image.tmdb.org/t/p/original"
@@ -65,7 +66,12 @@ export default async function Page({searchParams,}:{searchParams: Promise<{ [key
     return (
         <div className={styles.MetricsPageContainer}>
             <div className={styles.MetricsDisplayContainer}>
-                <SearchBar navBar={true} />
+                <div className={styles.MetricsDisplayNav}>
+                    <Link href="/" className={styles.MetricsDisplayNavHome}>
+                        [BINGE LOGIC]
+                    </Link>
+                    <SearchBar navBar={true} />
+                </div>
                 <div className={styles.MetricsDisplayHero}>
                     <div className={styles.MetricsDisplayHeroPoster}>
                         <img src={BACKDROP_URL}/>
