@@ -10,3 +10,4 @@ python-dotenv
 pytest
 pytest-asyncio
 numpy
+prometheus_fastapi_instrumentator

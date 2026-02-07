@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from prometheus_fastapi_instrumentator import Instrumentator
 from contextlib import asynccontextmanager
 
 from db.mongodb import client, ping_database
@@ -26,6 +27,8 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
         title="BingeLogic-API",
         lifespan = lifespan)
+
+Instrumentator().instrument(app).expose(app)
 
 app.include_router(health_router, prefix="/api")
 app.include_router(shows_router, prefix="/api")
